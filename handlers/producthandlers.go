@@ -2,16 +2,25 @@ package handlers
 
 import (
 	"encoding/json"
-	"goddamnnoob/Zocket-assignment/models"
+	"goddamnnoob/RabbitMQ-ProductAPI/models"
+	"goddamnnoob/RabbitMQ-ProductAPI/services"
 	"io"
 	"io/ioutil"
 	"net/http"
 )
 
+type Httpres struct {
+	Result string `json:"Result"`
+}
+
 func AddProduct(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+
 	if r.Method != "POST" {
-		io.WriteString(w, "Invalid HTTP Method")
-		return
+		output, _ := json.Marshal(Httpres{
+			Result: "Method Not Supported for this endpoint",
+		})
+		http.Error(w, string(output), 400)
 	}
 
 	var user models.User
@@ -29,9 +38,14 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
+	result, err := services.AddProduct(&product, &user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
 
-	w.Header().Set("content-type", "application/json")
-	output, err := json.Marshal(product)
+	output, _ := json.Marshal(Httpres{
+		Result: result,
+	})
 	w.Write(output)
 }
 

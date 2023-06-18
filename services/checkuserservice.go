@@ -1,16 +1,15 @@
 package services
 
 import (
-	"goddamnnoob/Zocket-assignment/integrations"
+	"goddamnnoob/RabbitMQ-ProductAPI/models"
+	"goddamnnoob/RabbitMQ-ProductAPI/repositories"
 )
 
-func CheckUserPresent(Userid int32) (ispresent bool, err error) {
-	connection, er := integrations.GetNewPostgresConnection()
-	if er != nil {
-		return false, er
+func CheckUserValid(Userid int32) (isvalid bool, err error) {
+	user := models.User{Userid: Userid}
+	isvalid, err = repositories.CheckUserValid(&user)
+	if err != nil {
+		return false, err
 	}
-	defer connection.Close()
-	ispresent = true
-	//TODO Check for user in DB
-	return ispresent, nil
+	return isvalid, nil
 }

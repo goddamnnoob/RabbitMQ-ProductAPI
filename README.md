@@ -1,2 +1,2 @@
-# Zocket-assignment
+# RabbitMQ-ProductAPI
 Message Queue Implementation in Go

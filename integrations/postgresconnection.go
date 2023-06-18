@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"strconv"
+
+	_ "github.com/lib/pq"
 )
 
 func GetNewPostgresConnection() (connection *sql.DB, erro error) {
@@ -18,7 +20,7 @@ func GetNewPostgresConnection() (connection *sql.DB, erro error) {
 	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	connection, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(" Error trying to connect to DB ")
+		log.Println(" Error trying to connect to DB ")
 		return nil, err
 	}
 	return connection, nil
