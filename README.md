@@ -1,2 +1,2 @@
 # RabbitMQ-ProductAPI
-Message Queue Implementation in Go
+Using RabbitMQ to send data to consumer service that receives data and does some tasks
